@@ -34,8 +34,11 @@ attr_accessor :fee
     return results
   end
 
-  def budget_update(movie, casting)
-
+  def budget_update
+    sql = "SELECT (SELECT budget FROM movies WHERE id = $1) - (SELECT fee FROM castings WHERE id = $2)"
+    values = [@movie_id, @id]
+    remaining_budget = SqlRunner.run(sql,values).first
+    return remaining_budget
   end
 
 end
